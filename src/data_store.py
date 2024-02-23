@@ -1,17 +1,17 @@
-import requests
+
 from flask import Flask
 
 from nba_api.stats.endpoints import commonplayerinfo, playercareerstats
 from nba_api.stats.static import players
 import random
-
-import os
-import psycopg2
-
-# Get database URL in Heroku Postgres
-DB_URL = os.environ['HEROKU_POSTGRESQL_MAUVE_URL']
-conn = psycopg2.connect(DB_URL, sslmode='require')
-
+#
+# import os
+# import psycopg2
+#
+# # Get database URL in Heroku Postgres
+# DB_URL = os.environ['HEROKU_POSTGRESQL_MAUVE_URL']
+# conn = psycopg2.connect(DB_URL, sslmode='require')
+#
 app = Flask(__name__)
 
 # class Players(db.Model):
