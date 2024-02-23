@@ -5,8 +5,8 @@ from nba_api.stats.endpoints import commonplayerinfo, playercareerstats
 from nba_api.stats.static import players
 import random
 #
-# import os
-# import psycopg2
+import os
+import psycopg2
 #
 # # Get database URL in Heroku Postgres
 # DB_URL = os.environ['HEROKU_POSTGRESQL_MAUVE_URL']
