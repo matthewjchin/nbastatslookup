@@ -2,8 +2,6 @@ from flask import Flask, request
 
 from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
 from nba_api.stats.static import players
-import requests
-
 
 app = Flask(__name__)
 
@@ -33,7 +31,6 @@ def get_player_name_active():
 def main():
     return '''Soon this will be a website for NBA basketball players' metrics for stats gurus,
         fantasy players, or curiosity.
-
 
     You can check if the player you entered is active or not.
     Enter the first AND last name and spell correctly. <br>

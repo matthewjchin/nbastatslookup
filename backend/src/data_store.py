@@ -4,6 +4,9 @@ from flask import Flask
 from nba_api.stats.endpoints import commonplayerinfo, playercareerstats
 from nba_api.stats.static import players
 import random
+from pandas import DataFrame
+
+
 #
 import os
 import psycopg2
@@ -62,6 +65,8 @@ if __name__ == '__main__':
     # Enter number between 0 and 530
     num = random.randint(0, len(players.get_active_players()))
     player_info = get_player_name(num)
+    print(player_info)
+
     # player_common_info = get_player_common_info(num)
-    player_stats = get_player_stats(player_info['id'])
-    player_points = get_points_per_game(player_info['id'])
+    print(get_player_stats(player_info['id']))
+    print(get_points_per_game(player_info['id']))
