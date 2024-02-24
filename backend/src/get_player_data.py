@@ -4,25 +4,9 @@ from flask import Flask
 from nba_api.stats.endpoints import commonplayerinfo, playercareerstats
 from nba_api.stats.static import players
 import random
-from pandas import DataFrame
 
 
-#
-import os
-import psycopg2
-#
-# # Get database URL in Heroku Postgres
-# DB_URL = os.environ['HEROKU_POSTGRESQL_MAUVE_URL']
-# conn = psycopg2.connect(DB_URL, sslmode='require')
-#
 app = Flask(__name__)
-
-# class Players(db.Model):
-#     player_id = db.Column(db.Integer, primary_key=True, nullable=False)
-#     player = db.Column(db.String, primary_key=False)
-#     player_ppg = db.Column(db.Float, primary_key=False, nullable=False)
-#     player_ppg = db.Column(db.Float, nullable=False)
-#     stats = db.Column(db.String)
 
 
 # Picks a number between 0 and 530 (current number of active NBA players) to return their id, first name, and last name
@@ -58,6 +42,26 @@ def get_player_stats(number):
 def get_points_per_game(pid):
     player_career = playercareerstats.PlayerCareerStats(player_id=pid)
     return sum(player_career.get_data_frames()[0]['PTS']) / sum(player_career.get_data_frames()[0]['GP'])
+
+
+def get_rebounds_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['REB']) / sum(player_career.get_data_frames()[0]['GP'])
+
+
+def get_assists_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['AST']) / sum(player_career.get_data_frames()[0]['GP'])
+
+
+def get_steals_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['STL']) / sum(player_career.get_data_frames()[0]['GP'])
+
+
+def get_blocks_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['BLK']) / sum(player_career.get_data_frames()[0]['GP'])
 
 
 if __name__ == '__main__':
