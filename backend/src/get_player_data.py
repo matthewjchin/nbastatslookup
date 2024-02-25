@@ -64,6 +64,26 @@ def get_blocks_per_game(pid):
     return sum(player_career.get_data_frames()[0]['BLK']) / sum(player_career.get_data_frames()[0]['GP'])
 
 
+def get_fta_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['FTA']) / sum(player_career.get_data_frames()[0]['GP'])
+
+
+def get_fg_pct_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return player_career.get_data_frames()[0]['FG_PCT']
+
+
+def get_3pfg_pct_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return player_career.get_data_frames()[0]['FG3_PCT']
+
+
+def get_ft_pct_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return player_career.get_data_frames()[0]['FT_PCT']
+
+
 if __name__ == '__main__':
     # db.create_all()
     # Enter number between 0 and 530
