@@ -12,8 +12,6 @@ app = Flask(__name__)
 #     return "Greeting: " + input_text
 
 
-
-
 @app.route("/echo_user_input", methods=["POST"])
 def get_player_name_active():
 
