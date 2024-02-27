@@ -15,9 +15,7 @@ def get_player_name(number):
     return active_players[number]
 
 
-# @app.route("/echo_user_input", methods=["POST"])
 def get_player_name_active(request):
-
     user_input = request.form["user_input"]
 
     nba_player = players.find_players_by_full_name(user_input)
@@ -49,8 +47,13 @@ def get_player_common_info(number):
     return player_common_info.get_response()
 
 
-def get_player_stats(number):
-    player_career = playercareerstats.PlayerCareerStats(player_id=number)
+def get_player_last_name(name):
+    players_last_name = players.find_players_by_last_name(name)
+    return players_last_name
+
+
+def get_player_stats(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
     return player_career.get_data_frames()[0]
 
 
