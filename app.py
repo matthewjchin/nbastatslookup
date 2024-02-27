@@ -37,16 +37,17 @@ def main():
     NOTE: We are working to get a drop down menu and/or features to search by last name.
         </p>
 
-     <form action="/echo_user_input" method="POST">
-         <input name="user_input">
-         <input type="submit" value="Submit!">
-     </form>
+    <form action="/echo_user_input" method="POST">
+     <input name="user_input">
+     <input type="submit" value="Submit!">
+    </form>
+
     '''
 
 
 if __name__ == "__main__":
     app.run(debug=True)
-    main()
+
 
 
 

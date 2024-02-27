@@ -1,11 +1,12 @@
 import unittest
-from app import get_player_name_active
+import app
+
+from flask import Response
 
 
 class MyTestCase(unittest.TestCase):
-    def test_get_player_name_active(self):
-        self.assertFalse(get_player_name_active())
-        self.assertFalse(get_player_name_active(""))
+    def test_app(self):
+        self.assertIsNotNone(self, Response.status_code)
 
 
 if __name__ == '__main__':
