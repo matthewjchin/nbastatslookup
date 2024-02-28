@@ -6,6 +6,11 @@ from nba_api.stats.static import players
 app = Flask(__name__)
 
 
+# @app.get("/")
+# def main():
+#     return "Hello World!"
+
+
 @app.route("/echo_user_input", methods=["POST"])
 def echo_input():
     input_text = request.form.get("user_input", "")
