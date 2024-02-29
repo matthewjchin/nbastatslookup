@@ -1,4 +1,3 @@
-
 from flask import Flask
 
 from nba_api.stats.endpoints import commonplayerinfo, playercareerstats
@@ -15,17 +14,18 @@ def get_player_name(number):
     return active_players[number]
 
 
-def get_player_name_active(request):
-    user_input = request.form["user_input"]
-
-    nba_player = players.find_players_by_full_name(user_input)
-    if nba_player is None:
-        return "No player found"
-    if user_input != nba_player[0]['full_name']:
-        return "The player cannot be found. Please go back and try again."
-    else:
-        nba_player_career = playercareerstats.PlayerCareerStats(player_id=nba_player[0]['id'])
-        return nba_player_career.get_normalized_json()
+# This should be the key function in requesting info from users.
+# Originally this was in the app.py file
+# def get_player_name_active(request):
+#     user_input = request.form["user_input"]
+#     nba_player = players.find_players_by_full_name(user_input)
+#     if nba_player is None:
+#         return "No player found"
+#     if user_input != nba_player[0]['full_name']:
+#         return "The player cannot be found. Please go back and try again."
+#     else:
+#         nba_player_career = playercareerstats.PlayerCareerStats(player_id=nba_player[0]['id'])
+#         return nba_player_career.get_normalized_json()
 
 
 def get_player_common_info(number):
