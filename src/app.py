@@ -1,26 +1,29 @@
+#!/usr/bin/env python3
+
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS     # Comment out CORS on deployment
 import os
 import psycopg2
+import get_player_data
 
 from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
 from nba_api.stats.static import players
 
-db_link = "DATABASE_URL=postgres://u12u7b6fo9s684:pa6b488169207651760673e9c9e9e2d187fa9b804e6d51789a8e53b572d2e6820@ec2-44-210-26-29.compute-1.amazonaws.com:5432/d1g41cl80lao5h"
 
-CREATE_PLAYERS_TABLE = """CREATE TABLE IF NOT EXISTS players (player_id integer PRIMARY, 
-                    player_name VARCHAR, first_name VARCHAR, last_name VARCHAR, date TIMESTAMP); """
 
-CREATE_STATS_TABLE = """CREATE TABLE IF NOT EXISTS playerstats (player_id integer PRIMARY, 
-                        date TIMESTAMP, fgpct DECIMAL(10,2), 3pfgpct DECIMAL(10,2).
-                         ppg DECIMAL(10,2), rpg DECIMAL(10,2), apg DECIMAL(10,2).
-                         spg DECIMAL(10.2), bpg DECIMAL(10.2) ON DELETE CASCADE)"""
-
-INSERT_PLAYER_RETURN_ID = """INSERT INTO players"""
+# CREATE_PLAYERS_TABLE = """CREATE TABLE IF NOT EXISTS players (player_id integer PRIMARY,
+#                     player_name VARCHAR, first_name VARCHAR, last_name VARCHAR, date TIMESTAMP); """
+#
+# CREATE_STATS_TABLE = """CREATE TABLE IF NOT EXISTS playerstats (player_id integer PRIMARY,
+#                         date TIMESTAMP, fgpct DECIMAL(10,2), 3pfgpct DECIMAL(10,2).
+#                          ppg DECIMAL(10,2), rpg DECIMAL(10,2), apg DECIMAL(10,2).
+#                          spg DECIMAL(10.2), bpg DECIMAL(10.2) ON DELETE CASCADE)"""
+#
+# INSERT_PLAYER_RETURN_ID = """INSERT INTO players"""
 
 app = Flask(__name__)
-url = os.getenv(db_link)
-connection = psycopg2.connect(url)
+# url = os.getenv(db_link)
+# connection = psycopg2.connect(url)
 
 
 # @app.post("/echo_user_input")
