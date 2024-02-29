@@ -49,7 +49,7 @@ def main():
     <p> You can check if the player you entered is active or not.
     Enter the first AND last name and spell correctly. <br>
     
-    All source code can be found at https://github.com/matthewjchin/nbastatslookup
+    All source code can be found at https://www.github.com/matthewjchin/nbastatslookup
     </p>
     
     <form action="/echo_user_input" method="POST">
