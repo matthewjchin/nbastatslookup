@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import Flask, request, jsonify
-from flask_cors import CORS  # Comment out CORS on deployment
+# from flask_cors import CORS  # Comment out CORS on deployment
 import os
 import psycopg2
 # import get_player_data
