@@ -16,20 +16,20 @@ def get_player_name(number):
 
 # This should be the key function in requesting info from users.
 # Originally this was in the app.py file
-# def get_player_name_active(request):
-#     user_input = request.form["user_input"]
-#     nba_player = players.find_players_by_full_name(user_input)
-#     if nba_player is None:
-#         return "No player found"
-#     if user_input != nba_player[0]['full_name']:
-#         return "The player cannot be found. Please go back and try again."
-#     else:
-#         nba_player_career = playercareerstats.PlayerCareerStats(player_id=nba_player[0]['id'])
-#         return nba_player_career.get_normalized_json()
+def get_player_name_active(request):
+    user_input = request.form["user_input"]
+    nba_player = players.find_players_by_full_name(user_input)
+    if nba_player is None:
+        return "No player found"
+    if user_input != nba_player[0]['full_name']:
+        return "The player cannot be found. Please go back and try again."
+    else:
+        nba_player_career = playercareerstats.PlayerCareerStats(player_id=nba_player[0]['id'])
+        return nba_player_career.get_normalized_json()
 
 
-def get_player_common_info(number):
-    player_common_info = commonplayerinfo.CommonPlayerInfo(player_id=number)
+def get_player_common_info(player):
+    player_common_info = commonplayerinfo.CommonPlayerInfo(player_id=player['id'])
     # custom_headers = {
     #     'Host': 'stats.nba.com',
     #     'Connection': 'keep-alive',
@@ -92,9 +92,19 @@ def get_fg_pct_per_game(pid):
     return player_career.get_data_frames()[0]['FG_PCT']
 
 
+def get_fg_pct_per_game_career(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['FGM']) / sum(player_career.get_data_frames()[0]['FGA'])
+
+
 def get_3pfg_pct_per_game(pid):
     player_career = playercareerstats.PlayerCareerStats(player_id=pid)
     return player_career.get_data_frames()[0]['FG3_PCT']
+
+
+def get_3pfg_pct_per_game_career(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['FG3M']) / sum(player_career.get_data_frames()[0]['FG3A'])
 
 
 def get_ft_pct_per_game(pid):
@@ -102,21 +112,36 @@ def get_ft_pct_per_game(pid):
     return player_career.get_data_frames()[0]['FT_PCT']
 
 
-if __name__ == '__main__':
-    # db.create_all()
-    # Enter number between 0 and 530
-    num = random.randint(0, len(players.get_active_players()))
-    player_info = get_player_name(num)
-    print(player_info)
+def get_ft_pct_per_game_career(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['FTM']) / sum(player_career.get_data_frames()[0]['FTA'])
 
-    # player_common_info = get_player_common_info(num)
+
+# Primarily a function for testing purposes; generate a random number
+if __name__ == '__main__':
+
+    # # Enter number between 0 and 530
+    # num = random.randint(0, len(players.get_active_players()))
+    # player_info = get_player_name(num)
+    # print(player_info)
+    #
+    # player_common_info = get_player_common_info(player_info)
     # print(player_common_info)
 
-    print(get_player_stats(player_info['id']))
-    print(get_points_per_game(player_info['id']))
-    print(get_rebounds_per_game(player_info['id']))
-    print(get_assists_per_game(player_info['id']))
-    print(get_fg_pct_per_game(player_info['id']))
-    print(get_3pfg_pct_per_game(player_info['id']))
+    # print(get_player_stats(player_info['id']))
+    #
+    # print(get_points_per_game(player_info['id']))
+    # print(get_rebounds_per_game(player_info['id']))
+    # print(get_assists_per_game(player_info['id']))
+    # print(get_steals_per_game(player_info['id']))
+    # print(get_blocks_per_game(player_info['id']))
+    # print(get_fg_pct_per_game(player_info['id']))
+    # print(get_3pfg_pct_per_game(player_info['id']))
+    #
+    # print(playercareerstats.PlayerCareerStats(player_id=player_info['id']).get_data_frames())
 
+    lbj_player = players.find_players_by_full_name("LeBron James")
+    print(lbj_player)
+    print(type(lbj_player))
+    print(lbj_player[0]['id'])
 
