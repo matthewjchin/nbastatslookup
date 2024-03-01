@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 # from flask_cors import CORS  # Comment out CORS on deployment
 import os
 import psycopg2
-import get_player_data
+# import get_player_data
 
 from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
 from nba_api.stats.static import players
@@ -52,7 +52,6 @@ def get_any_player_name():
     # player_str += str(nba_player_career.get_normalized_json())
     return player_str
 
-
 @app.post("/active_stats")
 def get_active_player_avgs():
     user_input = request.form['player']
@@ -65,14 +64,14 @@ def get_active_player_avgs():
     career_avgs += "\nLast Name: \t" + str(player[0]['last_name'])
 
     # Get player points, rebounds, assists, steals, blocks, percentages per game
-    player_ppg = get_player_data.get_points_per_game(player[0]['id'])
-    player_rpg = get_player_data.get_rebounds_per_game(player[0]['id'])
-    player_apg = get_player_data.get_assists_per_game(player[0]['id'])
-    player_spg = get_player_data.get_steals_per_game(player[0]['id'])
-    player_bpg = get_player_data.get_blocks_per_game(player[0]['id'])
-    player_fg = get_player_data.get_fg_pct_per_game_career(player[0]['id'])
-    player_3pg = get_player_data.get_3pfg_pct_per_game_career(player[0]['id'])
-    player_ft = get_player_data.get_ft_pct_per_game_career(player[0]['id'])
+    player_ppg = get_points_per_game(player[0]['id'])
+    player_rpg = get_rebounds_per_game(player[0]['id'])
+    player_apg = get_assists_per_game(player[0]['id'])
+    player_spg = get_steals_per_game(player[0]['id'])
+    player_bpg = get_blocks_per_game(player[0]['id'])
+    player_fg = get_fg_pct_per_game_career(player[0]['id'])
+    player_3pg = get_3pfg_pct_per_game_career(player[0]['id'])
+    player_ft = get_ft_pct_per_game_career(player[0]['id'])
 
     career_avgs += "\nPoints per game:\t" + str(player_ppg)
     career_avgs += "\nRebounds per game: \t" + str(player_rpg)
@@ -84,6 +83,38 @@ def get_active_player_avgs():
     career_avgs += "\nCareer FT Percentage: \t" + str(player_ft)
 
     return career_avgs
+
+def get_points_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['PTS']) / sum(player_career.get_data_frames()[0]['GP'])
+
+def get_rebounds_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['REB']) / sum(player_career.get_data_frames()[0]['GP'])
+
+def get_assists_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['AST']) / sum(player_career.get_data_frames()[0]['GP'])
+
+def get_steals_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['STL']) / sum(player_career.get_data_frames()[0]['GP'])
+
+def get_blocks_per_game(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['BLK']) / sum(player_career.get_data_frames()[0]['GP'])
+
+def get_fg_pct_per_game_career(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['FGM']) / sum(player_career.get_data_frames()[0]['FGA'])
+
+def get_3pfg_pct_per_game_career(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['FG3M']) / sum(player_career.get_data_frames()[0]['FG3A'])
+
+def get_ft_pct_per_game_career(pid):
+    player_career = playercareerstats.PlayerCareerStats(player_id=pid)
+    return sum(player_career.get_data_frames()[0]['FTM']) / sum(player_career.get_data_frames()[0]['FTA'])
 
 
 # @app.post("/get_active_player_stats")
