@@ -110,5 +110,13 @@ if __name__ == '__main__':
     print(player_info)
 
     # player_common_info = get_player_common_info(num)
+    # print(player_common_info)
+
     print(get_player_stats(player_info['id']))
     print(get_points_per_game(player_info['id']))
+    print(get_rebounds_per_game(player_info['id']))
+    print(get_assists_per_game(player_info['id']))
+    print(get_fg_pct_per_game(player_info['id']))
+    print(get_3pfg_pct_per_game(player_info['id']))
+
+

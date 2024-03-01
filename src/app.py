@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 
 from flask import Flask, request, jsonify
-from flask_cors import CORS     # Comment out CORS on deployment
+from flask_cors import CORS  # Comment out CORS on deployment
 import os
 import psycopg2
-import get_player_data
+# import get_player_data
 
 from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
 from nba_api.stats.static import players
-
-
 
 # CREATE_PLAYERS_TABLE = """CREATE TABLE IF NOT EXISTS players (player_id integer PRIMARY,
 #                     player_name VARCHAR, first_name VARCHAR, last_name VARCHAR, date TIMESTAMP); """
@@ -22,6 +20,8 @@ from nba_api.stats.static import players
 # INSERT_PLAYER_RETURN_ID = """INSERT INTO players"""
 
 app = Flask(__name__)
+
+
 # url = os.getenv(db_link)
 # connection = psycopg2.connect(url)
 
@@ -32,7 +32,12 @@ app = Flask(__name__)
 #     return "Greeting: " + input_text
 
 
-@app.post("/echo_user_input")
+def get_player_name(number):
+    active_players = players.get_active_players()
+    return active_players[number]
+
+
+@app.route("/echo_user_input", methods=['POST'])
 def get_active_player():
     user_input = request.form["user_input"]
     nba_player = players.find_players_by_full_name(user_input)
@@ -49,22 +54,22 @@ def get_active_player():
 def main():
     front_page = '''Soon this will be a website for NBA basketball players' metrics for stats gurus,
         fantasy players, or curiosity. <br>
+        
     <p> You can check if the player you entered is active or not.
     Enter the first AND last name and spell correctly. <br>
-    
+
     All source code can be found at https://www.github.com/matthewjchin/nbastatslookup
     </p>
-    
     <form action="/echo_user_input" method="POST">
      <input name="user_input">
      <input type="submit" value="Submit!">
     </form>
-
     '''
+
     return front_page
+    # return ''
 
 
 if __name__ == "__main__":
     app.run(debug=True)
-
 
