@@ -9,7 +9,7 @@ import psycopg2
 from nba_api.stats.library import data
 from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
 from nba_api.stats.static import players
-from nba_api.live.nba import *
+from nba_api.live.nba.endpoints import *
 
 # CREATE_PLAYERS_TABLE = """CREATE TABLE IF NOT EXISTS players (player_id integer PRIMARY,
 #                     player_name VARCHAR, first_name VARCHAR, last_name VARCHAR, date TIMESTAMP); """
@@ -141,6 +141,7 @@ def main():
     Soon this will be a website for NBA basketball players' metrics for stats gurus,
     fantasy players, or curiosity. You can check if the player you entered is active or not.
    
+   All source code can be found at https://www.github.com/matthewjchin/nbastatslookup
     </p>
     
     
@@ -150,14 +151,23 @@ def main():
      <input name="user_input">
      <input type="submit" value="Submit">
     </form>
-    
     <br>
-        
+    <br>
     
-    
+    Get today's games:<br><br>
     '''
 
-    front_page += "All source code can be found at https://www.github.com/matthewjchin/nbastatslookup"
+    # player_input = request.form['player']
+    # player = players.find_players_by_full_name(player_input)
+    # career_avgs += str(player)
+
+    # common_player = commonplayerinfo.CommonPlayerInfo(player_id=player[0]['id']).get_normalized_json()
+    # front_page += str(common_player)
+
+    front_page += scoreboard.ScoreBoard().get_json()
+
+    front_page += ("<br>"
+                   "All source code can be found at https://www.github.com/matthewjchin/nbastatslookup")
 
     return front_page
     # return ''
