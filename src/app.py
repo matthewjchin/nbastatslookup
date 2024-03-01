@@ -153,13 +153,7 @@ def main():
     
     <br>
         
-    Want to input a player's name and look up their overall career averages? 
-    Enter the first AND last name and spell correctly. 
-    (Temporary, but but currently the only thing that works for now.)
-    <form action="/active_stats" method="POST">
-     <input name="player">
-     <input type="submit" value="Submit">
-    </form>
+    
     
     '''
 
@@ -171,6 +165,16 @@ def main():
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
+
+# Old code to be worked on
+'''Want to input a player's name and look up their overall career averages? 
+    Enter the first AND last name and spell correctly. 
+    (Temporary, but but currently the only thing that works for now.)
+    <form action="/active_stats" method="POST">
+     <input name="player">
+     <input type="submit" value="Submit">
+    </form>'''
+
 
 
 # Don't use these forms
