@@ -120,13 +120,17 @@ def get_ft_pct_per_game_career(pid):
 # Primarily a function for testing purposes; generate a random number
 if __name__ == '__main__':
 
-    # # Enter number between 0 and 530
-    # num = random.randint(0, len(players.get_active_players()))
-    # player_info = get_player_name(num)
+    # Enter number between 0 and 530
+    num = random.randint(0, len(players.get_active_players()))
+    player_info = get_player_name(num)
     # print(player_info)
     #
     # player_common_info = get_player_common_info(player_info)
     # print(player_common_info)
+    # print(type(player_common_info))
+
+    common_info = commonplayerinfo.CommonPlayerInfo(player_info['id'])
+    print(common_info.player_stats)
 
     # print(get_player_stats(player_info['id']))
     #
@@ -140,8 +144,8 @@ if __name__ == '__main__':
     #
     # print(playercareerstats.PlayerCareerStats(player_id=player_info['id']).get_data_frames())
 
-    lbj_player = players.find_players_by_full_name("LeBron James")
-    print(lbj_player)
-    print(type(lbj_player))
-    print(lbj_player[0]['id'])
+    # lbj_player = players.find_players_by_full_name("LeBron James")
+    # print(lbj_player)
+    # print(type(lbj_player))
+    # print(lbj_player)
 

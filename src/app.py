@@ -6,35 +6,34 @@ import os
 import psycopg2
 # import get_player_data
 
+from nba_api.stats.library import data
 from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
 from nba_api.stats.static import players
+from nba_api.live.nba import *
 
 # CREATE_PLAYERS_TABLE = """CREATE TABLE IF NOT EXISTS players (player_id integer PRIMARY,
 #                     player_name VARCHAR, first_name VARCHAR, last_name VARCHAR, date TIMESTAMP); """
 #
 # CREATE_STATS_TABLE = """CREATE TABLE IF NOT EXISTS playerstats (player_id integer PRIMARY,
-#                         date TIMESTAMP, fgpct DECIMAL(10,2), 3pfgpct DECIMAL(10,2).
-#                          ppg DECIMAL(10,2), rpg DECIMAL(10,2), apg DECIMAL(10,2).
-#                          spg DECIMAL(10.2), bpg DECIMAL(10.2) ON DELETE CASCADE)"""
+#                         date TIMESTAMP, fgpct DECIMAL(10,2), 3pfgpct DECIMAL(10,2),
+#                          ppg DECIMAL(10,2), rpg DECIMAL(10,2), apg DECIMAL(10,2),
+#                          spg DECIMAL(10,2), bpg DECIMAL(10,2) ON DELETE CASCADE)"""
 #
-# INSERT_PLAYER_RETURN_ID = """INSERT INTO players"""
+
 
 app = Flask(__name__)
 
 
-# url = os.getenv(db_link)
-# connection = psycopg2.connect(url)
+# url = os.getenv("DATABASE_URL")
+# connection = psycopg2.connect(url, sslmode='require')
 
-
-# This function is meant for testing purposes
-# Originally part of the first phase of project or in event that a deployment fails
-@app.post("/echo_greeting")
-def echo_input():
-    input_text = request.form.get("greeting", "")
-    return "Greeting: " + input_text
-
-
-from nba_api.stats.library import data
+#
+# # This function is meant for testing purposes
+# # Originally part of the first phase of project or in event that a deployment fails
+# @app.post("/echo_greeting")
+# def echo_input():
+#     input_text = request.form.get("greeting", "")
+#     return "Greeting: " + input_text
 
 
 @app.post("/get_player_info")
@@ -59,12 +58,15 @@ def get_active_player_avgs():
 
     # Get player info
     player = players.find_players_by_full_name(user_input)
-    career_avgs += "Player ID:\t" + str(player[0]['id'])
-    career_avgs += "\nFirst Name: \t" + str(player[0]['first_name'])
-    career_avgs += "\nLast Name: \t" + str(player[0]['last_name'])
+    career_avgs += str(player)
+
+    common_player = commonplayerinfo.CommonPlayerInfo(player_id=player[0]['id']).get_normalized_json()
+    career_avgs += "<br><br>"
+    career_avgs += common_player
+
 
     # Get player points, rebounds, assists, steals, blocks, percentages per game
-    player_ppg = get_points_per_game(player[0]['id'])
+    # player_ppg = get_points_per_game(player[0]['id'])
     # player_rpg = get_rebounds_per_game(player[0]['id'])
     # player_apg = get_assists_per_game(player[0]['id'])
     # player_spg = get_steals_per_game(player[0]['id'])
@@ -73,7 +75,7 @@ def get_active_player_avgs():
     # player_3pg = get_3pfg_pct_per_game_career(player[0]['id'])
     # player_ft = get_ft_pct_per_game_career(player[0]['id'])
 
-    career_avgs += "\nPoints per game:\t" + str(player_ppg)
+    # career_avgs += "\nPoints per game:\t" + str(player_ppg)
     # career_avgs += "\nRebounds per game: \t" + str(player_rpg)
     # career_avgs += "\nAssists per game: \t" + str(player_apg)
     # career_avgs += "\nSteals per game: \t" + str(player_spg)
