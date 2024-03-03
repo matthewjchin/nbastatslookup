@@ -149,3 +149,40 @@ if __name__ == '__main__':
     # print(type(lbj_player))
     # print(lbj_player)
 
+
+'''from app.py'''
+
+# user_input = request.form['player']
+# career_avgs = ''''''
+#
+# # Get player info
+# player = players.find_players_by_full_name(user_input)
+# career_avgs += str(player)
+#
+# common_player = commonplayerinfo.CommonPlayerInfo(player_id=player[0]['id']).get_normalized_json()
+# career_avgs += "<br><br>"
+# career_avgs += common_player
+#
+# # Get player points, rebounds, assists, steals, blocks, percentages per game
+# # player_ppg = get_points_per_game(player[0]['id'])
+# # player_rpg = get_rebounds_per_game(player[0]['id'])
+# # player_apg = get_assists_per_game(player[0]['id'])
+# # player_spg = get_steals_per_game(player[0]['id'])
+# # player_bpg = get_blocks_per_game(player[0]['id'])
+# # player_fg = get_fg_pct_per_game_career(player[0]['id'])
+# # player_3pg = get_3pfg_pct_per_game_career(player[0]['id'])
+# # player_ft = get_ft_pct_per_game_career(player[0]['id'])
+#
+# # career_avgs += "\nPoints per game:\t" + str(player_ppg)
+# # career_avgs += "\nRebounds per game: \t" + str(player_rpg)
+# # career_avgs += "\nAssists per game: \t" + str(player_apg)
+# # career_avgs += "\nSteals per game: \t" + str(player_spg)
+# # career_avgs += "\nBlocks per game: \t" + str(player_bpg)
+# # career_avgs += "\nCareer FG Percentage: \t" + str(player_fg)
+# # career_avgs += "\nCareer 3PFG Percentage: \t" + str(player_3pg)
+# # career_avgs += "\nCareer FT Percentage: \t" + str(player_ft)
+#
+# return career_avgs
+
+
+

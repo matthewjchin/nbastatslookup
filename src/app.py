@@ -52,44 +52,14 @@ def get_any_player_name():
     return player_str
 
 
-# @app.post("/active_stats")
-def get_active_player_avgs():
-    user_input = request.form['player']
-    career_avgs = ''''''
-
-    # Get player info
-    player = players.find_players_by_full_name(user_input)
-    career_avgs += str(player)
-
-    common_player = commonplayerinfo.CommonPlayerInfo(player_id=player[0]['id']).get_normalized_json()
-    career_avgs += "<br><br>"
-    career_avgs += common_player
-
-    # Get player points, rebounds, assists, steals, blocks, percentages per game
-    # player_ppg = get_points_per_game(player[0]['id'])
-    # player_rpg = get_rebounds_per_game(player[0]['id'])
-    # player_apg = get_assists_per_game(player[0]['id'])
-    # player_spg = get_steals_per_game(player[0]['id'])
-    # player_bpg = get_blocks_per_game(player[0]['id'])
-    # player_fg = get_fg_pct_per_game_career(player[0]['id'])
-    # player_3pg = get_3pfg_pct_per_game_career(player[0]['id'])
-    # player_ft = get_ft_pct_per_game_career(player[0]['id'])
-
-    # career_avgs += "\nPoints per game:\t" + str(player_ppg)
-    # career_avgs += "\nRebounds per game: \t" + str(player_rpg)
-    # career_avgs += "\nAssists per game: \t" + str(player_apg)
-    # career_avgs += "\nSteals per game: \t" + str(player_spg)
-    # career_avgs += "\nBlocks per game: \t" + str(player_bpg)
-    # career_avgs += "\nCareer FG Percentage: \t" + str(player_fg)
-    # career_avgs += "\nCareer 3PFG Percentage: \t" + str(player_3pg)
-    # career_avgs += "\nCareer FT Percentage: \t" + str(player_ft)
-
-    return career_avgs
+@app.post("/get_games")
+def get_tonight_games():
+    return scoreboard.ScoreBoard().get_json()
 
 
-# @app.post("/get_active_player_stats")
+@app.post("/active_player_stats")
 def get_active_player():
-    user_input = request.form["user_input"]
+    user_input = request.form["active_player"]
     nba_player = players.find_players_by_full_name(user_input)
     if nba_player[0] is None:
         return "No player found"
@@ -122,9 +92,20 @@ def main():
      <input type="submit" value="Submit">
     </form>
     <br>
+    
+    Get today's scheduled games: 
+    <form action="/get_games" method="POST">
+    <input type="submit" value="Get today's NBA games">
+    </form>
     <br>
     
-    Get today's games:<br><br>
+    <p> Want to input a player's name and look up their overall career averages? 
+    Enter the first AND last name and spell correctly. 
+    (Temporary, but but currently the only thing that works for now.)
+    <form action="/active_player_stats" method="POST">
+     <input name="active_player">
+     <input type="submit" value="Go">
+    </form>  </p>   <br>
     '''
 
     # player_input = request.form['player']
@@ -132,11 +113,23 @@ def main():
     # career_avgs += str(player)
 
     # common_player = commonplayerinfo.CommonPlayerInfo(player_id=player[0]['id']).get_normalized_json()
-    # front_page += str(common_player)
+    front_page += "<p>Below are the top performing players from today's NBA games.</p><br>"
 
-    daily_scoreboard = scoreboard.ScoreBoard().get_json()
+    # Get all live NBA game updates from the scoreboard library for that day
+    # This is to come out as a dictionary, but be printed to webpage as string
+    daily_scoreboard = scoreboard.ScoreBoard().get_dict()
 
-    front_page += daily_scoreboard
+    # New code to portray top players
+    for x in daily_scoreboard.values():  # first dictionary
+        for y, z in x.items():
+            if y == 'games':
+                for each_game in z:
+                    front_page += (str(each_game['homeTeam']['teamCity']) + " " + str(each_game['homeTeam']['teamName']))
+                    front_page += " (HOME) vs. "
+                    front_page += (str(each_game['awayTeam']['teamCity']) + " " + str(each_game['awayTeam']['teamName']))
+                    front_page += " (AWAY) <br>"
+                    front_page += (str(each_game['gameLeaders']) + "<br><br>")
+    # front_page += daily_scoreboard
 
     return front_page
     # return ''

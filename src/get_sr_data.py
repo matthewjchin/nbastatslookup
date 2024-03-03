@@ -25,9 +25,12 @@ for x in daily_scoreboard.values():     # first dictionary
         if y == 'games':     # check key for "games" and get the values
             # print(gameid )
             for game in z:   # value consists of a list of dictionaries
+                # print(game)
                 print(game['homeTeam']['teamCity'], game['homeTeam']['teamName'],
                       " vs. ", game['awayTeam']['teamCity'], game['awayTeam']['teamName'])
                 print(game['gameLeaders'])
+
+
                 # if game['gameLeaders'] is not None:
                 #     print(game['gameLeaders'])
                 #     # print(game['gameLeaders'].values())
