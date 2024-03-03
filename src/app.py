@@ -35,7 +35,6 @@ app = Flask(__name__)
 #     input_text = request.form.get("greeting", "")
 #     return "Greeting: " + input_text
 
-
 @app.post("/get_player_info")
 def get_any_player_name():
     player_str = ''
@@ -50,6 +49,12 @@ def get_any_player_name():
     # nba_player_career = playercareerstats.PlayerCareerStats(player_id=player_info[0])
     # player_str += str(nba_player_career.get_normalized_json())
     return player_str
+
+
+@app.post("/get_games")
+def get_tonight_games():
+    return scoreboard.ScoreBoard().get_json()
+
 
 
 # @app.post("/active_stats")
@@ -103,18 +108,17 @@ def get_active_player():
 @app.route("/")
 def main():
     front_page = '''
-
-    <h1>NBA Player Stats Lookup</h1>
+<h1>NBA Player Stats Lookup</h1>
     <p>
     Soon this will be a website for NBA basketball players' metrics for stats gurus,
     fantasy players, or curiosity. You can check if the player you entered is active or not.
-
+    
     <br>
-
+    
     All source code can be found at https://www.github.com/matthewjchin/nbastatslookup
     </p>
-
-
+    
+    
     Feeling like you just want to enter a random number? 
     Insert a number below and get an NBA player's info, former or current.   
     <form action="/get_player_info" method="POST">
@@ -122,21 +126,36 @@ def main():
      <input type="submit" value="Submit">
     </form>
     <br>
+    
+    Get today's scheduled games: 
+    <form action="/get_games" method="POST">
+    <input type="submit" value="Get today's NBA games">
+    </form>
     <br>
-
-    Get today's games:<br><br>
-    '''
+    
+   '''
 
     # player_input = request.form['player']
     # player = players.find_players_by_full_name(player_input)
     # career_avgs += str(player)
 
     # common_player = commonplayerinfo.CommonPlayerInfo(player_id=player[0]['id']).get_normalized_json()
-    # front_page += str(common_player)
+    front_page += "<p>Below are the top performing players from today's NBA games.</p><br>"
 
-    daily_scoreboard = scoreboard.ScoreBoard().get_json()
+    # Get all live NBA game updates from the scoreboard library for that day
+    # This is to come out as a dictionary, but be printed to webpage as string
+    daily_scoreboard = scoreboard.ScoreBoard().get_dict()
 
-    front_page += daily_scoreboard
+    # New code to portray top players
+    for x in daily_scoreboard.values():  # first dictionary
+        for y, z in x.items():
+            if y == 'games':
+                for each_game in z:
+                    front_page += (str(each_game['homeTeam']['teamCity']) + " " + str(each_game['homeTeam']['teamName']))
+                    front_page += " (HOME) vs. "
+                    front_page += (str(each_game['awayTeam']['teamCity']) + " " + str(each_game['awayTeam']['teamName']))
+                    front_page += " (AWAY) <br>"
+                    front_page += (str(each_game['gameLeaders']) + "<br><br>")
 
     return front_page
     # return ''
