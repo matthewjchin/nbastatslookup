@@ -2,9 +2,9 @@
 
 from flask import Flask, request, jsonify
 # from flask_cors import CORS  # Comment out CORS on deployment
-import os
-import psycopg2
-import csv
+# import os
+# import psycopg2
+# import csv
 
 from nba_api.stats.library import data
 from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
