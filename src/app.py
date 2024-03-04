@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 from flask import Flask, request, jsonify
-# from flask_cors import CORS  # Comment out CORS on deployment
+# # from flask_cors import CORS  # Comment out CORS on deployment
 import os
 import psycopg2
-import csv
+# import csv
 
 from nba_api.stats.library import data
 from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
@@ -24,8 +24,8 @@ from nba_api.live.nba.endpoints import *
 app = Flask(__name__)
 
 
-# url = os.getenv("DATABASE_URL")
-# connection = psycopg2.connect(url, sslmode='require')
+url = os.getenv("DATABASE_URL")
+connection = psycopg2.connect(url, sslmode='require')
 
 #
 # # This function is meant for testing purposes
@@ -99,13 +99,7 @@ def main():
     </form>
     <br>
     
-    <p> Want to input a player's name and look up their overall career averages? 
-    Enter the first AND last name and spell correctly. 
-    (Temporary, but but currently the only thing that works for now.)
-    <form action="/active_player_stats" method="POST">
-     <input name="active_player">
-     <input type="submit" value="Go">
-    </form>  </p>   <br>
+      <br>
     '''
 
     # player_input = request.form['player']
@@ -124,28 +118,38 @@ def main():
         for y, z in x.items():
             if y == 'games':
                 for each_game in z:
-                    front_page += (str(each_game['homeTeam']['teamCity']) + " " + str(each_game['homeTeam']['teamName']))
+                    front_page += (str(each_game['homeTeam']['teamCity']) + " " +
+                                   str(each_game['homeTeam']['teamName']))
                     front_page += " (HOME) vs. "
-                    front_page += (str(each_game['awayTeam']['teamCity']) + " " + str(each_game['awayTeam']['teamName']))
+                    front_page += (str(each_game['awayTeam']['teamCity']) + " " +
+                                   str(each_game['awayTeam']['teamName']))
                     front_page += " (AWAY) <br>"
+                    front_page += (str(each_game['homeTeam']['teamTricode']) + "    " +
+                                   str(each_game['awayTeam']['teamTricode']))
+                    front_page += "<br>"
+                    front_page += (str(each_game['homeTeam']['score']) + "      " +
+                                   str(each_game['awayTeam']['score']))
+                    front_page += "<br>"
                     front_page += (str(each_game['gameLeaders']) + "<br><br>")
+
+
     # front_page += daily_scoreboard
 
     return front_page
-    # return ''
 
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
 
-# Old code to be worked on
-'''Want to input a player's name and look up their overall career averages? 
+
+# Unfortunately this code will crash on Heroku every time it is run
+''' <p> Want to input a player's name and look up their overall career averages? 
     Enter the first AND last name and spell correctly. 
     (Temporary, but but currently the only thing that works for now.)
-    <form action="/active_stats" method="POST">
-     <input name="player">
-     <input type="submit" value="Submit">
-    </form>'''
+    <form action="/active_player_stats" method="POST">
+     <input name="active_player">
+     <input type="submit" value="Go">
+    </form>  </p>'''
 
 # Don't use these forms
 # Change "echo_user_input" whenever deemed possible

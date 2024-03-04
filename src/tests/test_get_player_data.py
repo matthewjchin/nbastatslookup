@@ -1,5 +1,5 @@
 import unittest
-import get_player_data
+from src import get_player_data
 from nba_api.stats.static import players
 
 
