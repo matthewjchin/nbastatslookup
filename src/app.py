@@ -56,10 +56,10 @@ def get_tonight_games():
     return scoreboard.ScoreBoard().get_json()
 
 
+# Get top performers from all live NBA game updates from the scoreboard library for that day
+# This is to come out as a dictionary, but be printed to webpage as string
 def get_top_performers():
     front_page = ''''''
-    # Get all live NBA game updates from the scoreboard library for that day
-    # This is to come out as a dictionary, but be printed to webpage as string
     daily_scoreboard = scoreboard.ScoreBoard().get_dict()
 
     # New code to portray top performing players from each game that day
@@ -86,12 +86,14 @@ def main():
     <h1>NBA Player Stats Lookup</h1>
     <p>
     Soon this will be a website for NBA basketball players' metrics for stats gurus,
-    fantasy players, or curiosity. You can check if the player you entered is active or not.
+    fantasy players, or curiosity. 
+    <br>
+    You can check if the player you entered is active or not.
     <br>
     All source code can be found at https://www.github.com/matthewjchin/nbastatslookup
     </p>
     
-    
+    <h3>Check for an Active NBA Player</h3>
     Feeling like you just want to enter a random number? 
     Insert a number below and get an NBA player's info, former or current.   
     <form action="/get_player_info" method="POST">
@@ -100,14 +102,19 @@ def main():
     </form>
     <br>
     
+    <h3>Today's NBA Games</h3>
     Get today's scheduled games by pressing the button below.  
     <form action="/get_games" method="POST">
     <input type="submit" value="Get today's NBA games">
     </form>
     <br>
+    
+    <h3>Top Performers</h3>
     '''
 
-    front_page += "<p>Below are the top performing players from today's NBA games.</p>"
+    front_page += ("<p>Below are the top performing players from today's NBA games.<br>"
+                   "Some of the players listed below may be helpful in your stats endeavors "
+                   "or as guidance for fantasy basketball. </p>")
     top_players = get_top_performers()
     front_page += top_players
 
