@@ -17,11 +17,12 @@ from nba_api.live.nba.endpoints import *
 #                          spg DECIMAL(10,2), bpg DECIMAL(10,2) ON DELETE CASCADE)"""
 #
 
-
 app = Flask(__name__)
-
-
-# url = os.getenv("DATABASE_URL")
+# db_url = 'HEROKU_POSTGRESQL_CYAN_URL'
+# app.config[db_url] = ""
+#
+# # url = os.getenv("DATABASE_URL")
+# url = os.getenv(db_url)
 # connection = psycopg2.connect(url, sslmode='require')
 
 # # This function is meant for testing purposes
@@ -51,6 +52,8 @@ def get_any_player_name():
         return player_str
 
 
+# Get a list of all the NBA games playing that night
+# Only one large JSON string returned to webpage after pressing "today's games" button
 @app.post("/get_games")
 def get_tonight_games():
     return scoreboard.ScoreBoard().get_json()
@@ -126,6 +129,7 @@ if __name__ == "__main__":
 
 
 # Unfortunately this form submission code will crash on Heroku every time it is run
+# Code times out after 30 seconds on Heroku, but does work locally
 ''' <p> Want to input a player's name and look up their overall career averages? 
     Enter the first AND last name and spell correctly. 
     (Temporary, but but currently the only thing that works for now.)

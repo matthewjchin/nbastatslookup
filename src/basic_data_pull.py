@@ -27,7 +27,8 @@ for player in nba_players:
     # Just a sample - Stephen Curry
     if player['full_name'] == 'Stephen Curry':
         career_stats = playercareerstats.PlayerCareerStats(player_id=player['id'])
-        career_stats_df = career_stats.get_data_frames()[0] # career regular season stats by season
+        career_stats_df = career_stats.get_data_frames()[0]  # career regular season stats by season
+        print(career_stats.get_data_frames()[1])
 
         # career_stats_df = career_stats.get_data_frames()[1] # total career regular season stats
         # career_stats_df = career_stats.get_data_frames()[2] # career playoffs stats by season
@@ -53,9 +54,16 @@ for player in nba_players:
         print("Blocks per game: %3.2f" % (sum(career_stats_df['BLK']) / sum(career_stats_df['GP'])))  # career blocks per game
         print("Turnovers per game: %3.2f" % (sum(career_stats_df['TOV']) / sum(career_stats_df['GP'])))  # career turnovers per game
         print()
-        print("Field goal percentage: %3.2f" % (sum(career_stats_df['FGM']) / sum(career_stats_df['FGA'])))
-        print("3-point field goal percentage: %3.2f" % (sum(career_stats_df['FG3M']) / sum(career_stats_df['FG3A'])))
-        print("Free throw percentage: %3.2f" % (sum(career_stats_df['FTM']) / sum(career_stats_df['FTA'])))
+        print("Field goal percentage: %3.2f" % ((sum(career_stats_df['FGM']) / sum(career_stats_df['FGA'])) * 100))
+        print("3-point field goal percentage: %3.2f" %
+              ((sum(career_stats_df['FG3M']) / sum(career_stats_df['FG3A'])) * 100))
+        print("Free throw percentage: %3.2f" %
+              ((sum(career_stats_df['FTM']) / sum(career_stats_df['FTA'])) * 100))
+
+        print()
+        print("Total career points: ", career_stats.get_data_frames()[1]['PTS'])
+        print("Total career rebounds: ", career_stats.get_data_frames()[1]['REB'])
+        print("Total career assists: ", career_stats.get_data_frames()[1]['AST'])
 
     # career_stats_df = career_stats.get_data_frames()[0]
     # count += 1
