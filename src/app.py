@@ -41,15 +41,21 @@ def get_any_player_name():
     player_str = ''
     user_input = request.form['user_input']
 
-    number = int(user_input)
-    players_list = players.get_players()
-    player_info = players_list[number]
+    try:
+        number = int(user_input)
+        players_list = players.get_players()
+        player_info = players_list[number]
 
-    player_str += str(player_info)
+        player_str += str(player_info)
 
-    # nba_player_career = playercareerstats.PlayerCareerStats(player_id=player_info[0])
-    # player_str += str(nba_player_career.get_normalized_json())
-    return player_str
+        # nba_player_career = playercareerstats.PlayerCareerStats(player_id=player_info[0])
+        # player_str += str(nba_player_career.get_normalized_json())
+        return player_str
+    except ValueError:
+        player_str += "You entered: "
+        player_str += user_input
+        player_str += "<br> Invalid input. Please go back and enter a number between 0 and 4899. "
+        return player_str
 
 
 @app.post("/get_games")
@@ -120,16 +126,11 @@ def main():
                 for each_game in z:
                     front_page += (str(each_game['homeTeam']['teamCity']) + " " +
                                    str(each_game['homeTeam']['teamName']))
-                    front_page += " (HOME) vs. "
+                    front_page += (" (HOME): " + str(each_game['homeTeam']['score']) + "  vs. ")
                     front_page += (str(each_game['awayTeam']['teamCity']) + " " +
                                    str(each_game['awayTeam']['teamName']))
-                    front_page += " (AWAY) <br>"
-                    front_page += (str(each_game['homeTeam']['teamTricode']) + "    " +
-                                   str(each_game['awayTeam']['teamTricode']))
-                    front_page += "<br>"
-                    front_page += (str(each_game['homeTeam']['score']) + "      " +
-                                   str(each_game['awayTeam']['score']))
-                    front_page += "<br>"
+                    front_page += (" (AWAY): " + str(each_game['awayTeam']['score']) + "<br>")
+                    # front_page += "<br>"
                     front_page += (str(each_game['gameLeaders']) + "<br><br>")
 
 
