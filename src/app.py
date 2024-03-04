@@ -1,16 +1,22 @@
+# import datetime
+
 from flask import Flask, request, jsonify
 # # from flask_cors import CORS  # Comment out CORS on deployment
 import os
 import psycopg2
+
 # import csv
 
 from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
 from nba_api.stats.static import players
 from nba_api.live.nba.endpoints import *
 
-# CREATE_PLAYERS_TABLE = """CREATE TABLE IF NOT EXISTS players (player_id integer PRIMARY,
-#                     player_name VARCHAR, first_name VARCHAR, last_name VARCHAR, date TIMESTAMP); """
-#
+CREATE_ACTIVE_PLAYERS_LOOKUP = """CREATE TABLE IF NOT EXISTS 
+                    players_test(player_id INTEGER PRIMARY KEY, player_name VARCHAR, active BOOLEAN);"""
+
+INSERT_INTO_ACTIVE_PLAYERS_LOOKUP = """INSERT INTO players_test(player_id, player_name, active) 
+                                        VALUES (%s, %s, %s);"""
+
 # CREATE_STATS_TABLE = """CREATE TABLE IF NOT EXISTS playerstats (player_id integer PRIMARY,
 #                         date TIMESTAMP, fgpct DECIMAL(10,2), 3pfgpct DECIMAL(10,2),
 #                          ppg DECIMAL(10,2), rpg DECIMAL(10,2), apg DECIMAL(10,2),
@@ -20,10 +26,9 @@ from nba_api.live.nba.endpoints import *
 app = Flask(__name__)
 # db_url = 'HEROKU_POSTGRESQL_CYAN_URL'
 # app.config[db_url] = ""
-#
-# # url = os.getenv("DATABASE_URL")
-# url = os.getenv(db_url)
-# connection = psycopg2.connect(url, sslmode='require')
+
+url = os.getenv("DATABASE_URL")
+connection = psycopg2.connect(url, sslmode='require')
 
 # # This function is meant for testing purposes
 # # Originally part of the first phase of project or in event that a deployment fails
@@ -42,7 +47,25 @@ def get_any_player_name():
         number = int(user_input)
         players_list = players.get_players()
         player_info = players_list[number]
+
         player_str += str(player_info)
+        player_str += "<br>You entered: "
+        player_str += str(player_info['full_name'])
+        player_str += "<br>Player id: "
+        player_str += str(player_info['id'])
+        player_str += ("<br>Is this player active? " + str(player_info["is_active"]))
+
+        id = player_info['id']
+        name = player_info['full_name']
+        active = player_info['is_active']
+        # date = datetime.strptime()
+        with connection.cursor() as cursor:
+            cursor.execute(CREATE_ACTIVE_PLAYERS_LOOKUP)
+            # cursor.execute("""INSERT INTO players_test(player_id. player_name, add_date, active)
+            #                             VALUES ()""")
+            cursor.execute(INSERT_INTO_ACTIVE_PLAYERS_LOOKUP, (id, name, active))
+            # player_id = cursor.fetchone()[0]
+
         return player_str
 
     except ValueError:
