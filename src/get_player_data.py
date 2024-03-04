@@ -16,34 +16,13 @@ def get_player_name(number):
 
 # This should be the key function in requesting info from users.
 # Originally this was in the app.py file
-def get_player_name_active(request):
-    user_input = request.form["user_input"]
-    nba_player = players.find_players_by_full_name(user_input)
-    if nba_player is None:
-        return "No player found"
-    if user_input != nba_player[0]['full_name']:
-        return "The player cannot be found. Please go back and try again."
-    else:
-        nba_player_career = playercareerstats.PlayerCareerStats(player_id=nba_player[0]['id'])
-        return nba_player_career.get_normalized_json()
+def get_player_name_active(nba_player):
+    nba_player_career = playercareerstats.PlayerCareerStats(player_id=nba_player['id'])
+    return nba_player_career.get_data_frames()[0]
 
 
 def get_player_common_info(player):
     player_common_info = commonplayerinfo.CommonPlayerInfo(player_id=player['id'])
-    # custom_headers = {
-    #     'Host': 'stats.nba.com',
-    #     'Connection': 'keep-alive',
-    #     'Cache-Control': 'max-age=0',
-    #     'Upgrade-Insecure-Requests': '1',
-    #     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3)
-    #     AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
-    #     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,
-    #     image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-    #     'Accept-Encoding': 'gzip, deflate, br',
-    #     'Accept-Language': 'en-US,en;q=0.9',
-    # }
-    # player_common_info = commonplayerinfo.CommonPlayerInfo(player_id=number, proxy='127.0.0.1:80',
-    #                                                        headers=custom_headers, timeout=600)
     return player_common_info.get_response()
 
 
@@ -123,6 +102,7 @@ if __name__ == '__main__':
     # Enter number between 0 and 530
     num = random.randint(0, len(players.get_active_players()))
     player_info = get_player_name(num)
+
     # print(player_info)
     #
     # player_common_info = get_player_common_info(player_info)
@@ -130,10 +110,11 @@ if __name__ == '__main__':
     # print(type(player_common_info))
 
     common_info = commonplayerinfo.CommonPlayerInfo(player_info['id'])
-    print(common_info.player_stats)
+    print(common_info.get_normalized_json())
 
     # print(get_player_stats(player_info['id']))
-    #
+    print(get_player_name_active(player_info))
+
     # print(get_points_per_game(player_info['id']))
     # print(get_rebounds_per_game(player_info['id']))
     # print(get_assists_per_game(player_info['id']))
@@ -150,39 +131,31 @@ if __name__ == '__main__':
     # print(lbj_player)
 
 
-'''from app.py'''
 
-# user_input = request.form['player']
-# career_avgs = ''''''
-#
-# # Get player info
-# player = players.find_players_by_full_name(user_input)
-# career_avgs += str(player)
-#
-# common_player = commonplayerinfo.CommonPlayerInfo(player_id=player[0]['id']).get_normalized_json()
-# career_avgs += "<br><br>"
-# career_avgs += common_player
-#
+
+
+
 # # Get player points, rebounds, assists, steals, blocks, percentages per game
-# # player_ppg = get_points_per_game(player[0]['id'])
-# # player_rpg = get_rebounds_per_game(player[0]['id'])
-# # player_apg = get_assists_per_game(player[0]['id'])
-# # player_spg = get_steals_per_game(player[0]['id'])
-# # player_bpg = get_blocks_per_game(player[0]['id'])
-# # player_fg = get_fg_pct_per_game_career(player[0]['id'])
-# # player_3pg = get_3pfg_pct_per_game_career(player[0]['id'])
-# # player_ft = get_ft_pct_per_game_career(player[0]['id'])
-#
-# # career_avgs += "\nPoints per game:\t" + str(player_ppg)
-# # career_avgs += "\nRebounds per game: \t" + str(player_rpg)
-# # career_avgs += "\nAssists per game: \t" + str(player_apg)
-# # career_avgs += "\nSteals per game: \t" + str(player_spg)
-# # career_avgs += "\nBlocks per game: \t" + str(player_bpg)
-# # career_avgs += "\nCareer FG Percentage: \t" + str(player_fg)
-# # career_avgs += "\nCareer 3PFG Percentage: \t" + str(player_3pg)
-# # career_avgs += "\nCareer FT Percentage: \t" + str(player_ft)
+# player_ppg = get_points_per_game(player[0]['id'])
+# player_rpg = get_rebounds_per_game(player[0]['id'])
+# player_apg = get_assists_per_game(player[0]['id'])
+# player_spg = get_steals_per_game(player[0]['id'])
+# player_bpg = get_blocks_per_game(player[0]['id'])
+# player_fg = get_fg_pct_per_game_career(player[0]['id'])
+# player_3pg = get_3pfg_pct_per_game_career(player[0]['id'])
+# player_ft = get_ft_pct_per_game_career(player[0]['id'])
+
+# career_avgs += "\nPoints per game:\t" + str(player_ppg)
+# career_avgs += "\nRebounds per game: \t" + str(player_rpg)
+# career_avgs += "\nAssists per game: \t" + str(player_apg)
+# career_avgs += "\nSteals per game: \t" + str(player_spg)
+# career_avgs += "\nBlocks per game: \t" + str(player_bpg)
+# career_avgs += "\nCareer FG Percentage: \t" + str(player_fg)
+# career_avgs += "\nCareer 3PFG Percentage: \t" + str(player_3pg)
+# career_avgs += "\nCareer FT Percentage: \t" + str(player_ft)
 #
 # return career_avgs
+
 
 
 
