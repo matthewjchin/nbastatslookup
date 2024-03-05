@@ -5,6 +5,7 @@ from flask import Flask, request  # , jsonify
 import os
 import psycopg2
 import dj_database_url
+from dotenv import load_dotenv
 # import csv
 
 # from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
@@ -25,14 +26,14 @@ INSERT_INTO_ACTIVE_PLAYERS_LOOKUP = """INSERT INTO players_test(player_id, playe
 #                          ppg DECIMAL(10,2), rpg DECIMAL(10,2), apg DECIMAL(10,2),
 #                          spg DECIMAL(10,2), bpg DECIMAL(10,2) ON DELETE CASCADE)"""
 #
-
+load_dotenv()
 app = Flask(__name__)
 # db_url = 'HEROKU_POSTGRESQL_CYAN_URL'
 # app.config[db_url] = ""
 
 url = os.getenv("DATABASE_URL")
 connection = psycopg2.connect(url, sslmode='require')
-
+# psycopg2.connect()
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
