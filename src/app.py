@@ -1,18 +1,21 @@
 # import datetime
-
-from flask import Flask, request, jsonify
+from django.conf.global_settings import DATABASES
+from flask import Flask, request  # , jsonify
 # # from flask_cors import CORS  # Comment out CORS on deployment
 import os
 import psycopg2
-
+import dj_database_url
 # import csv
 
-from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
+# from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
 from nba_api.stats.static import players
 from nba_api.live.nba.endpoints import *
 
+CREATE_PLAYERS_IDS = """CREATE TABLE IF NOT EXISTS 
+                        pids(id SERIAL PRIMARY KEY, pid INTEGER);"""
+
 CREATE_ACTIVE_PLAYERS_LOOKUP = """CREATE TABLE IF NOT EXISTS 
-                    players_test(player_id INTEGER PRIMARY KEY, player_name VARCHAR, active BOOLEAN);"""
+                    players_test(player_id INTEGER, player_name VARCHAR, active BOOLEAN);"""
 
 INSERT_INTO_ACTIVE_PLAYERS_LOOKUP = """INSERT INTO players_test(player_id, player_name, active) 
                                         VALUES (%s, %s, %s);"""
@@ -30,6 +33,9 @@ app = Flask(__name__)
 url = os.getenv("DATABASE_URL")
 connection = psycopg2.connect(url, sslmode='require')
 
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+
 # # This function is meant for testing purposes
 # # Originally part of the first phase of project or in event that a deployment fails
 # @app.post("/echo_greeting")
@@ -38,6 +44,7 @@ connection = psycopg2.connect(url, sslmode='require')
 #     return "Greeting: " + input_text
 
 
+# Get player basic information, which in this case is if they are an active or inactive NBA player
 @app.post("/get_player_info")
 def get_any_player_name():
     player_str = ''
@@ -58,14 +65,15 @@ def get_any_player_name():
         id = player_info['id']
         name = player_info['full_name']
         active = player_info['is_active']
-        # date = datetime.strptime()
-        with connection.cursor() as cursor:
-            cursor.execute(CREATE_ACTIVE_PLAYERS_LOOKUP)
-            # cursor.execute("""INSERT INTO players_test(player_id. player_name, add_date, active)
-            #                             VALUES ()""")
-            cursor.execute(INSERT_INTO_ACTIVE_PLAYERS_LOOKUP, (id, name, active))
-            # player_id = cursor.fetchone()[0]
 
+        cursor = connection.cursor()
+        cursor.execute(CREATE_ACTIVE_PLAYERS_LOOKUP)
+        cursor.execute(INSERT_INTO_ACTIVE_PLAYERS_LOOKUP, (id, name, active))
+        # player_id = cursor.fetchone()[0]
+        connection.commit()
+
+        # connection.cursor().close()
+        # connection.close()
         return player_str
 
     except ValueError:
@@ -150,7 +158,6 @@ def main():
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
 
-
 # Unfortunately this form submission code will crash on Heroku every time it is run
 # Code times out after 30 seconds on Heroku, but does work locally
 ''' <p> Want to input a player's name and look up their overall career averages? 
@@ -186,5 +193,3 @@ if __name__ == "__main__":
 #     else:
 #         nba_player_career = playercareerstats.PlayerCareerStats(player_id=nba_player[0]['id'])
 #         return '''NBA player output: <br>''' + nba_player_career.get_normalized_json()
-
-
