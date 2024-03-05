@@ -4,7 +4,7 @@ from flask import Flask, request  # , jsonify
 # # from flask_cors import CORS  # Comment out CORS on deployment
 import os
 import psycopg2
-import dj_database_url
+# import dj_database_url
 from dotenv import load_dotenv
 # import csv
 
@@ -34,7 +34,7 @@ app = Flask(__name__)
 url = os.getenv("DATABASE_URL")
 connection = psycopg2.connect(url, sslmode='require')
 # psycopg2.connect()
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 # # This function is meant for testing purposes
