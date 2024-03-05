@@ -16,7 +16,7 @@ CREATE_PLAYERS_IDS = """CREATE TABLE IF NOT EXISTS
                         pids(id SERIAL PRIMARY KEY, pid INTEGER);"""
 
 CREATE_ACTIVE_PLAYERS_LOOKUP = """CREATE TABLE IF NOT EXISTS 
-                    players_test(player_id INTEGER, player_name VARCHAR, active BOOLEAN);"""
+                    player_lookup(player_id INTEGER, player_name VARCHAR, active BOOLEAN);"""
 
 INSERT_INTO_ACTIVE_PLAYERS_LOOKUP = """INSERT INTO players_test(player_id, player_name, active) 
                                         VALUES (%s, %s, %s);"""
