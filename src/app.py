@@ -12,14 +12,20 @@ from dotenv import load_dotenv
 from nba_api.stats.static import players
 from nba_api.live.nba.endpoints import *
 
+# CLEAR_TABLE = """DROP players_lookup;"""
+
 CREATE_PLAYERS_IDS = """CREATE TABLE IF NOT EXISTS 
                         pids(id SERIAL PRIMARY KEY, pid INTEGER);"""
 
-CREATE_ACTIVE_PLAYERS_LOOKUP = """CREATE TABLE IF NOT EXISTS 
-                    player_lookup(player_id INTEGER, player_name VARCHAR, active BOOLEAN);"""
+# CREATE_ACTIVE_PLAYERS_LOOKUP = """CREATE TABLE IF NOT EXISTS
+#                     players_lookup(id SERIAL NOT NULL PRIMARY KEY, player_id INTEGER,
+#                     player_name VARCHAR, active BOOLEAN);"""
 
-INSERT_INTO_ACTIVE_PLAYERS_LOOKUP = """INSERT INTO players_test(player_id, player_name, active) 
-                                        VALUES (%s, %s, %s);"""
+CREATE_ACTIVE_PLAYERS_LOOKUP = """CREATE TABLE IF NOT EXISTS 
+                    lookup(id SERIAL NOT NULL PRIMARY KEY, player_name VARCHAR, active BOOLEAN);"""
+
+INSERT_INTO_ACTIVE_PLAYERS_LOOKUP = """INSERT INTO lookup(player_name, active) 
+                                        VALUES (%s, %s);"""
 
 # CREATE_STATS_TABLE = """CREATE TABLE IF NOT EXISTS playerstats (player_id integer PRIMARY,
 #                         date TIMESTAMP, fgpct DECIMAL(10,2), 3pfgpct DECIMAL(10,2),
@@ -33,6 +39,9 @@ app = Flask(__name__)
 
 url = os.getenv("DATABASE_URL")
 connection = psycopg2.connect(url, sslmode='require')
+cursor = connection.cursor()
+
+# cursor.execute(CLEAR_TABLE)
 # psycopg2.connect()
 # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
@@ -46,6 +55,7 @@ connection = psycopg2.connect(url, sslmode='require')
 
 
 # Get player basic information, which in this case is if they are an active or inactive NBA player
+
 @app.post("/get_player_info")
 def get_any_player_name():
     player_str = ''
@@ -63,16 +73,15 @@ def get_any_player_name():
         player_str += str(player_info['id'])
         player_str += ("<br>Is this player active? " + str(player_info["is_active"]))
 
-        id = player_info['id']
+        # id = player_info['id']
         name = player_info['full_name']
         active = player_info['is_active']
 
-        cursor = connection.cursor()
         cursor.execute(CREATE_ACTIVE_PLAYERS_LOOKUP)
-        cursor.execute(INSERT_INTO_ACTIVE_PLAYERS_LOOKUP, (id, name, active))
+        cursor.execute(INSERT_INTO_ACTIVE_PLAYERS_LOOKUP, (name, active))
         # player_id = cursor.fetchone()[0]
         connection.commit()
-
+        #
         # connection.cursor().close()
         # connection.close()
         return player_str
