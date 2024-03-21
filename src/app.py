@@ -14,18 +14,18 @@ from nba_api.live.nba.endpoints import *
 
 # CLEAR_TABLE = """DROP players_lookup;"""
 
-CREATE_PLAYERS_IDS = """CREATE TABLE IF NOT EXISTS 
-                        pids(id SERIAL PRIMARY KEY, pid INTEGER);"""
+# CREATE_PLAYERS_IDS = """CREATE TABLE IF NOT EXISTS
+#                         pids(id SERIAL PRIMARY KEY, pid INTEGER);"""
 
 # CREATE_ACTIVE_PLAYERS_LOOKUP = """CREATE TABLE IF NOT EXISTS
 #                     players_lookup(id SERIAL NOT NULL PRIMARY KEY, player_id INTEGER,
 #                     player_name VARCHAR, active BOOLEAN);"""
 
-CREATE_ACTIVE_PLAYERS_LOOKUP = """CREATE TABLE IF NOT EXISTS 
-                    lookup(id SERIAL NOT NULL PRIMARY KEY, player_name VARCHAR, active BOOLEAN);"""
-
-INSERT_INTO_ACTIVE_PLAYERS_LOOKUP = """INSERT INTO lookup(player_name, active) 
-                                        VALUES (%s, %s);"""
+# CREATE_ACTIVE_PLAYERS_LOOKUP = """CREATE TABLE IF NOT EXISTS
+#                     lookup(id SERIAL NOT NULL PRIMARY KEY, player_name VARCHAR, active BOOLEAN);"""
+#
+# INSERT_INTO_ACTIVE_PLAYERS_LOOKUP = """INSERT INTO lookup(player_name, active)
+#                                         VALUES (%s, %s);"""
 
 # CREATE_STATS_TABLE = """CREATE TABLE IF NOT EXISTS playerstats (player_id integer PRIMARY,
 #                         date TIMESTAMP, fgpct DECIMAL(10,2), 3pfgpct DECIMAL(10,2),
@@ -77,8 +77,8 @@ def get_any_player_name():
         name = player_info['full_name']
         active = player_info['is_active']
 
-        cursor.execute(CREATE_ACTIVE_PLAYERS_LOOKUP)
-        cursor.execute(INSERT_INTO_ACTIVE_PLAYERS_LOOKUP, (name, active))
+        # cursor.execute(CREATE_ACTIVE_PLAYERS_LOOKUP)
+        # cursor.execute(INSERT_INTO_ACTIVE_PLAYERS_LOOKUP, (name, active))
         # player_id = cursor.fetchone()[0]
         connection.commit()
         #
