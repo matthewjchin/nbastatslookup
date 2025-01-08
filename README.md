@@ -1,8 +1,24 @@
 <h1>NBA Player Stats Lookup</h1>
 
+test-branch
+Find the performance metrics of an NBA player for fantasy basketball use,
+sports betting, or to just browse around and be a stats guru. 
+
+More features will be added over time. 
+
+<br>
+<h3>Update Log</h3> 
+
+2/22/24: Creation of repository <br>
+2/23/24: More features to be added <br>
+3/2/24: Main deployment in test-branch <br>
+1/8/25: Deletion of test-branch, all in main, expected reopening of webpage TBD <br>
+
+
+
+=======
 <p>
-Find statistics of an NBA player for fantasy basketball use,
-sports betting, or to just browse around and be a numbers guru. 
+Find statistics of an NBA player for fantasy basketball use or to just browse around and be a numbers guru. 
 
 More features will be added over time. 
 
@@ -14,6 +30,8 @@ from the [NBA Advanced Stats site](https://www.nba.com/stats).
 
 
 URL to project (INACTIVE as of 8/28/24): https://nbastatslookup-ade7c0e3e0c0.herokuapp.com/
+  
+NEW URL from Heroku: TBD
 </p>
 <br>
 
@@ -34,4 +52,5 @@ You can still look through the code to see how the libraries were being used.
 2/22/24: Creation of repository <br>
 2/24/24: More features to be added <br>
 3/2/24: Main app deployment can be found in [test-branch](https://github.com/matthewjchin/nbastatslookup/tree/test-branch)
+
 
