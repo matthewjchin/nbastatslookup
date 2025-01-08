@@ -350,8 +350,7 @@ def get_top_performers():
 def main():'''
     
 
-'''front_page = '''
-   ''' 
+'''front_page = 
 
     <h1>NBA Player Stats Lookup</h1>
     <p>
@@ -381,8 +380,27 @@ def main():'''
     <br>
     
     <h3>Top Performers</h3>
-    '''
+    front_page += ("<p>Below are the top performing players from today's NBA games.<br>"
+                   "Some of the players listed below may be helpful in your stats endeavors "
+                   "or as guidance for fantasy basketball. </p>")
+    top_players = get_top_performers()
+    front_page += top_players
 
+    return front_page
+    
+    if __name__ == "__main__":
+        app.run(debug=True, port=5000)
+
+        <br>
+        
+        <h3>Today's NBA Games</h3>
+        Get today's scheduled games by pressing the button below.  
+        <form action="/get_games" method="POST">
+        <input type="submit" value="Get today's NBA games">
+        </form>
+        <br>
+        
+    <h3>Top Performers</h3>
     front_page += ("<p>Below are the top performing players from today's NBA games.<br>"
                    "Some of the players listed below may be helpful in your stats endeavors "
                    "or as guidance for fantasy basketball. </p>")
@@ -395,33 +413,10 @@ def main():'''
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
 
-    <br>
-    
-    <h3>Today's NBA Games</h3>
-    Get today's scheduled games by pressing the button below.  
-    <form action="/get_games" method="POST">
-    <input type="submit" value="Get today's NBA games">
-    </form>
-    <br>
-    
-    <h3>Top Performers</h3>
-    '''
-    front_page += ("<p>Below are the top performing players from today's NBA games.<br>"
-                   "Some of the players listed below may be helpful in your stats endeavors "
-                   "or as guidance for fantasy basketball. </p>")
-    top_players = get_top_performers()
-    front_page += top_players
-
-    return front_page
-
-
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)'''
-
 
 # Unfortunately this form submission code will crash on Heroku every time it is run
 # Code times out after 30 seconds on Heroku, but does work locally
-''' <p> Want to input a player's name and look up their overall career averages? 
+ <p> Want to input a player's name and look up their overall career averages? 
     Enter the first AND last name and spell correctly. 
     (Temporary, but but currently the only thing that works for now.)
     <form action="/active_player_stats" method="POST">

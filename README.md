@@ -7,7 +7,7 @@ More features will be added over time.
 
 <br>
 New URL TBD, still deployed through Heroku.
-
+<br>
 
 The web app is being deployed on Heroku, with plans to integrate a 
 Postgres database via queries in SQL. It will pull data from the 
